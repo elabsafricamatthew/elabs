@@ -7,7 +7,7 @@ import {
   WhiteCurve,
   PayJobs,
 } from "../../public/assets/svgImgs";
-import { useHorizontalScroll } from "./hooks";
+import { useHorizontalScroll } from "@/hooks";
 import {
   BetkingGif,
   ParcelBoyGif,
