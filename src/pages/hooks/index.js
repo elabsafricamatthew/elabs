@@ -1,0 +1,1 @@
+export {default as useHorizontalScroll} from './autoHorizontalScrolling.js'

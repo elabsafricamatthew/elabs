@@ -1,0 +1,71 @@
+.container {
+    background: #FF781F;
+    color: #fff;
+    .footerContent {
+        display: flex;
+        position: relative;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        width: 90%;
+        margin: 0 auto;
+        padding: 3em 0;
+        .linksContainer a:hover, .linksContainer a:focus  {
+            font-weight: 700;
+        }
+        .footerLabel {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5em;
+        }
+        .companyLinksWrapper {
+            display: flex;
+            gap: 2.5em;
+
+            .linksContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 0.2rem;
+                padding-right: 0.2em;
+            }
+        }
+        .socialMediaWrapper {
+            align-self: baseline;
+        }
+
+        .socialMediaWrapper div {
+            margin: 0 0 3.4em;
+            display: flex;
+            gap: 1em;
+        }
+
+        .socialIconsWrapper svg {
+            font-size: 1.3rem;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .footerContent .footerLogoWrapper {
+            flex-basis: 100%;
+            margin:0 auto 2em;
+        }
+
+        .socialMediaWrapper div {
+            margin: 0 0 0.6em !important;
+        }
+    }
+
+    @media (max-width: 530px) {
+        .footerContent {
+            padding-bottom: 5em;
+        }
+        .copyrightText {
+            position: absolute;
+            bottom: 35px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
