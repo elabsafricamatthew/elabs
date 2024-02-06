@@ -5,7 +5,8 @@ import { useForm } from "@formspree/react";
 
 const ContactForm = () => {
   const formMessageRef = useRef(null);
-  const [apiState, handleSubmit] = useForm("mvoekrak");
+  const [formsent, setFormsent] = useState(false);
+  const [state, handleSubmit] = useForm("mvoekrak");
   const [showSuccessText, setShowSuccessText] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
@@ -13,23 +14,30 @@ const ContactForm = () => {
     reason: "",
     message: "",
   });
-    
-    const handleSend = () => {
-        if (apiState.succeeded) {
+
+  useEffect(() => {
+    let stateChanged = false;
+
+    if (formsent && !stateChanged) {
+      stateChanged = true;
+      if (state.succeeded) {
+        setShowSuccessText(true);
+        setFormData({
+          fullname: "",
+          email: "",
+          reason: "",
+          message: "",
+        });
+      } else {
+        if (formMessageRef) {
           setShowSuccessText(true);
-          setFormData({
-            fullname: "",
-            email: "",
-            reason: "",
-            message: "",
-          });
-        } else if (apiState.errors) {
-          setShowSuccessText(true);
-          formMessageRef.current.textContent =
-            "Something went wrong. Please try again.";
-          formMessageRef.current.style.backgroundColor = "tomato";
+            formMessageRef.current.textContent =
+              "Something went wrong. Please try again.";
+            formMessageRef.current.style.backgroundColor = "tomato";
         }
+      }
     }
+  }, [formsent]);
 
   const handleInput = ({ target: { name, value } }) => {
     setShowSuccessText(false);
@@ -37,6 +45,11 @@ const ContactForm = () => {
       ...s,
       [name]: value,
     }));
+  };
+
+  const submitHandler = async (e) => {
+    await handleSubmit(e);
+    setFormsent(true);
   };
 
   return (
@@ -73,8 +86,7 @@ const ContactForm = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-                      handleSubmit(e);
-                      handleSend()
+            submitHandler(e);
           }}
         >
           <input
@@ -82,6 +94,7 @@ const ContactForm = () => {
             id="fullname"
             required
             onChange={handleInput}
+            onFocus={handleInput}
             value={formData.fullname}
             minLength={2}
             type="text"
@@ -90,6 +103,7 @@ const ContactForm = () => {
           <input
             type="email"
             onChange={handleInput}
+            onFocus={handleInput}
             value={formData.email}
             name="email"
             id="email"
@@ -99,6 +113,7 @@ const ContactForm = () => {
           <input
             name="reason"
             onChange={handleInput}
+            onFocus={handleInput}
             value={formData.reason}
             id="reason"
             required
@@ -109,13 +124,17 @@ const ContactForm = () => {
           <textarea
             name="message"
             onChange={handleInput}
+            onFocus={handleInput}
             value={formData.message}
             id="message"
             placeholder="Your message"
           ></textarea>
 
           {showSuccessText && (
-            <div className="successMessage">
+            <div
+              onClick={() => setShowSuccessText(false)}
+              className="successMessage"
+            >
               <span
                 className="closeButton"
                 onClick={() => setShowSuccessText(false)}
@@ -128,14 +147,14 @@ const ContactForm = () => {
             </div>
           )}
           <button
-            disabled={apiState.submitting}
-            className={`primaryBtn ${apiState.submitting ? "sending" : null}`}
+            disabled={state.submitting}
+            className={`primaryBtn ${state.submitting ? "sending" : null}`}
             type="submit"
           >
             <span>
-              {apiState.submitting ? <PiSpinnerBold /> : <IoChevronForward />}
+              {state.submitting ? <PiSpinnerBold /> : <IoChevronForward />}
             </span>
-            <span>send{apiState.submitting && "ing"} message</span>
+            <span>send{state.submitting && "ing"} message</span>
           </button>
         </form>
       </div>

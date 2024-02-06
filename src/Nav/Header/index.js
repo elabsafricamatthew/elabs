@@ -1,6 +1,6 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
+import Link from "next/link";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { HeaderLogo } from "../../../public/assets/svgImgs";
 import style from "./Header.module.css";
 
 const Header = () => {
@@ -15,6 +15,21 @@ const Header = () => {
     "contact us",
   ];
 
+  const handleScrollToId = (id) => {
+    let domId = id ? id.toLowerCase() : "";
+
+    const dom = document.querySelector(`#${domId}`);
+
+    if (dom) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: dom.offsetTop - 20,
+          behavior: "smooth",
+        });
+      }, 100);
+    }
+  };
+
   return (
     <header
       className={`${style.container} ${
@@ -22,13 +37,18 @@ const Header = () => {
       }`}
     >
       <div className={style.headerContent}>
-        <img  src="/assets/svgImgs/logo.svg" alt="logo"/>
+        <img src="/assets/svgImgs/logo.svg" alt="logo" />
         <nav>
           <ul>
             {navLInks.map((link) => (
               <li key={link}>
                 <a
-                  onClick={() => setshowMobileNav(false)}
+                  onClick={() => {
+                    setshowMobileNav(false);
+                    handleScrollToId(
+                      link.includes("contact") ? "contact" : link
+                    );
+                  }}
                   href={link.includes("contact") ? "#contact" : `#${link}`}
                   className={link.includes("home") ? style.active : null}
                 >
