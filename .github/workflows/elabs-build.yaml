@@ -14,7 +14,7 @@ on:
         type: string
 
 env:
-  DEPLOYMENT_FOLDER: ./
+  DEPLOYMENT_FOLDER: out
 
 jobs:
 # Please do not rename this job
@@ -39,6 +39,8 @@ jobs:
         run: |
           npm install --global yarn
           yarn install --frozen-lockfile
+          yarn build
+          yarn export
 
 # Please do not touch the following action
       - name: Store deployment content
@@ -46,7 +48,7 @@ jobs:
         with:
           api-key: ${{ secrets.IONOS_API_KEY }}
           service-host: api-us.ionos.space
-          project-id: b7231320-36b4-4dc1-8605-ac84a155ac14
+          project-id: 5a7673cd-1145-49cf-b484-22db1f068842
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: ${{ env.DEPLOYMENT_FOLDER }}
